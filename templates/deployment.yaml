@@ -1,0 +1,49 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "shadowsocks.fullname" . }}
+  labels:
+    app: {{ template "shadowsocks.name" . }}
+    chart: {{ template "shadowsocks.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "shadowsocks.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "shadowsocks.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: mritd/shadowsocks
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-s"
+            - "-s 0.0.0.0 -p 80 -m aes-256-cfb -k test123 --fast-open"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: kcptun
+              containerPort: 6500
+              protocol: UDP
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
