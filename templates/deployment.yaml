@@ -25,9 +25,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-s"
-            - "-s 0.0.0.0 -p 80 -m aes-256-cfb -k test123 --fast-open"
+            - {{ printf "-s 0.0.0.0 -p 80 -m aes-256-cfb -k %s --fast-open" .Values.password }}
           ports:
-            - name: http
+            - name: shadowsocks
               containerPort: 80
               protocol: TCP
             - name: kcptun

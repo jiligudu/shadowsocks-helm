@@ -10,10 +10,10 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: {{ .Values.service.shadowsocksPort }}
+      targetPort: 80
       protocol: TCP
-      name: http
+      name: shadowsocks
   selector:
     app: {{ template "shadowsocks.name" . }}
     release: {{ .Release.Name }}
