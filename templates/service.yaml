@@ -10,17 +10,18 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-{{ if .Values.kcptun.enable }}
-    - port: {{ .Values.kcptun.port }}
-      targetPort: 6500
-      protocol: UDP
-      name: kcptun
-{{ else }}
+# kubernetes cannot expose UDP and TCP together
+#{#{ if .Values.kcptun.enable }}
+#    - port: {#{ .Values.kcptun.port }}
+#      targetPort: 6500
+#      protocol: UDP
+#      name: kcptun
+#{#{ else }}
     - port: {{ .Values.shadowsocks.port }}
       targetPort: 6443
       protocol: TCP
       name: shadowsocks
-{{ end }}
+#{#{ end }}
   selector:
     app: {{ template "shadowsocks.name" . }}
     release: {{ .Release.Name }}

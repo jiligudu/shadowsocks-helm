@@ -6,9 +6,9 @@ shadowsocks:
   encryptMethod: aes-256-cfb
   password: test123
   port: 80
-kcptun:
-  enable: false
-  port: 8080
+#kcptun:
+#  enable: false
+#  port: 8080
 
 replicaCount: 3
 

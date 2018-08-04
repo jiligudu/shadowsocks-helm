@@ -26,11 +26,11 @@ spec:
           args:
             - "-s"
             - {{ printf "-s 0.0.0.0 -p 6443 -m %s -k %s --fast-open" .Values.shadowsocks.encryptMethod .Values.shadowsocks.password }}
-{{ if .Values.kcptun.enable }}
-            - "-x"
-            - "-k"
-            - {{ printf "-t 127.0.0.1:6443 -l :6500 -mode fast2" }}
-{{ end }}
+#{#{ if .Values.kcptun.enable }}
+#            - "-x"
+#            - "-k"
+#            - {{ printf "-t 127.0.0.1:6443 -l :6500 -mode fast2" }}
+#{#{ end }}
           ports:
             - name: shadowsocks
               containerPort: 6443

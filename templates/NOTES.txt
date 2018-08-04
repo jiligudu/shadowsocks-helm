@@ -1,10 +1,7 @@
 1. Get the application URL by running these commands:
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.
            You can watch the status of by running 'kubectl get svc -w {{ template "shadowsocks.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "shadowsocks.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-  {{- if .Values.kcptun.enable -}}
-  echo shadowsocks with kcptun: ss://{{ .Values.shadowsocks.encryptMethod }}:{{ .Values.shadowsocks.password }}@$SERVICE_IP:{{ .Values.kcptun.port }}
-  {{- else -}}
+
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "shadowsocks.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   echo shadowsocks: ss://{{ .Values.shadowsocks.encryptMethod }}:{{ .Values.shadowsocks.password }}@$SERVICE_IP:{{ .Values.shadowsocks.port }}
-  {{- end -}}
