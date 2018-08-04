@@ -25,10 +25,15 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-s"
-            - {{ printf "-s 0.0.0.0 -p 80 -m aes-256-cfb -k %s --fast-open" .Values.password }}
+            - {{ printf "-s 0.0.0.0 -p 6443 -m %s -k %s --fast-open" .Values.shadowsocks.encryptMethod .Values.shadowsocks.password }}
+{{ if .Values.kcptun.enable }}
+            - "-x"
+            - "-k"
+            - {{ printf "-t 127.0.0.1:6443 -l :6500 -mode fast2" }}
+{{ end }}
           ports:
             - name: shadowsocks
-              containerPort: 80
+              containerPort: 6443
               protocol: TCP
             - name: kcptun
               containerPort: 6500

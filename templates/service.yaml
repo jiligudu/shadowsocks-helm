@@ -10,10 +10,17 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.shadowsocksPort }}
-      targetPort: 80
+{{ if .Values.kcptun.enable }}
+    - port: {{ .Values.kcptun.port }}
+      targetPort: 6500
+      protocol: UDP
+      name: kcptun
+{{ else }}
+    - port: {{ .Values.shadowsocks.port }}
+      targetPort: 6443
       protocol: TCP
       name: shadowsocks
+{{ end }}
   selector:
     app: {{ template "shadowsocks.name" . }}
     release: {{ .Release.Name }}
